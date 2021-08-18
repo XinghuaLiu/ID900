@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+src/ID900.egg-info/PKG-INFO
+src/ID900.egg-info/SOURCES.txt
+src/ID900.egg-info/dependency_links.txt
+src/ID900.egg-info/top_level.txt
