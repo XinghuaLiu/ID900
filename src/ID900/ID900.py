@@ -276,7 +276,7 @@ class ID900:
 
     def flushHIST(self):
         for i in range(1, 5):
-            print(self.hist[i], self.hist[i].flush())
+            self.hist[i].flush()
 
     def enabSampling(self, acquisition_time):
         self.scpi.exec("TSGE8:ENAB OFF")
