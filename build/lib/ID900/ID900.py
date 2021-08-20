@@ -276,7 +276,8 @@ class ID900:
 
     def flushHIST(self):
         for i in range(1, 5):
-            print(self.hist[i], self.hist[i].flush())
+            self.hist[i].flush()
+        #print("HIST flushed")
 
     def enabSampling(self, acquisition_time):
         self.scpi.exec("TSGE8:ENAB OFF")
@@ -375,8 +376,6 @@ class ID900:
     def histdata(self, num):
 
         data = {}
-        label = {}
         for i in range(1, num + 1):
-            data[i] = eval(self.hist[1].data())
-            label[i] = eval(self.hist[i].bwid, self.hist[i].bcou)
-        return data, label
+            data[i] = eval(self.hist[i].data())
+        return data
