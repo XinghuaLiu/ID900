@@ -90,7 +90,8 @@ class Combiner:
 	  - trigger : abstract of Begin and End window Input Ports
 	  - start_delay : time in ps which the start of the window is to be delayed
 	  - end_delay : time in ps which the end of the window is to be delayed
-	  - window : tupple defining both start_ and end_ delays"""
+	  - window : tupple defining both start_ and end_ delays
+      - window_enab : set whether enable the window or not"""
 
     def __init__(self, parent, index):
         self._parent = parent
@@ -159,6 +160,14 @@ class Combiner:
     @opinionout.setter
     def opinionout(self, opout):
         self._parent.exec("TSCO{0}:OPOU {1}".format(self._id, opout))
+
+    @property
+    def window_enab(self):
+        return self._parent.exec("TSCO{0}:WIND:ENAB?".format(self._id))
+
+    @window_enab.setter
+    def window_enab(self, enab):
+        self._parent.exec("TSCO{0}:WIND:ENAB {1}".format(self._id, enab))
 
 
 class Input:
@@ -285,26 +294,24 @@ class ID900:
 
     # configuration connections for two fold coincidence between inpu1 & inpu2 winthin window (ps)
     def config2foldCoincidence(self, window):
-        # config connections for tsco1
-        self.tsco[1].first = self.inpu[1]
-        self.tsco[1].trigger = self.inpu[2]
-        self.tsco[1].window = (1, window)
-        self.tsco[1].opinionin = 'ONLYFIR'
-        self.tsco[1].opinioniut = 'MUTE'
-        # config connections for tsco2
-        self.tsco[2].first = self.inpu[2]
-        self.tsco[2].trigger = self.inpu[1]
-        self.tsco[2].window = (1, window)
-        self.tsco[2].opinionin = 'ONLYFIR'
-        self.tsco[2].opinionout = 'MUTE'
+        # config connections for tsco5
+        self.tsco[5].first = self.inpu[1]
+        self.tsco[5].opinionin = 'ONLYFIR'
+        self.tsco[5].opinioniut = 'ONLYFIR'
+        self.tsco[5].window_enab = 'OFF'
+        # config connections for tsco6
+        self.tsco[6].first = self.inpu[2]
+        self.tsco[6].opinionin = 'ONLYFIR'
+        self.tsco[6].opinioniut = 'ONLYFIR'
+        self.tsco[6].window_enab = 'OFF'
 
         # config HIST connection
-        self.hist[1].ref = self.tsco[1]
-        self.hist[1].stop = self.tsco[2]
+        self.hist[1].ref = self.tsco[5]
+        self.hist[1].stop = self.tsco[6]
         self.hist[1].enab = 'tsge8'
 
-        self.hist[2].ref = self.tsco[2]
-        self.hist[2].stop = self.tsco[1]
+        self.hist[2].ref = self.tsco[6]
+        self.hist[2].stop = self.tsco[5]
         self.hist[2].enab = 'tsge8'
 
     def setEventGenAsDelay(self, ev, delay):
@@ -312,6 +319,10 @@ class ID900:
         self.scpi.exec(
             "TSGE{0}:ENAB ON;:TSGE{0}:TRIG:INPO:LINK INPU{1};:TSGE{0}:MODE SPULSE;TRIG:MODE INPORT;DELAY {2};:TSGE{0}:SPUL:PWID 4000;".format(
                 ev, ev, delay))
+
+    def setInputDelay(self, num, delay):
+        # Use for set input[num] for specific delay
+        self.inpu[num].delay = delay
 
     def config3foldCoincidence(self, d2, w2, d3, w3):
         # configure Event Generators as delay, use t_process as delay value
