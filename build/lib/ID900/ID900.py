@@ -297,12 +297,12 @@ class ID900:
         # config connections for tsco5
         self.tsco[5].first = self.inpu[1]
         self.tsco[5].opinionin = 'ONLYFIR'
-        self.tsco[5].opinioniut = 'ONLYFIR'
+        self.tsco[5].opinionout = 'ONLYFIR'
         self.tsco[5].window_enab = 'OFF'
         # config connections for tsco6
         self.tsco[6].first = self.inpu[2]
         self.tsco[6].opinionin = 'ONLYFIR'
-        self.tsco[6].opinioniut = 'ONLYFIR'
+        self.tsco[6].opinionout = 'ONLYFIR'
         self.tsco[6].window_enab = 'OFF'
 
         # config HIST connection

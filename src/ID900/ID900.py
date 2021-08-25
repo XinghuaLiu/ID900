@@ -387,5 +387,5 @@ class ID900:
 
         data = {}
         for i in range(1, num + 1):
-            data[i] = eval(self.hist[1].data())
+            data[i] = eval(self.hist[i].data())
         return data
