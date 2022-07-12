@@ -384,7 +384,7 @@ class ID900:
 
     # get hist data from 1 to num in np array
     def histdata(self, num):
-
+        # data is in the form of array
         data = {}
         for i in range(1, num + 1):
             data[i] = eval(self.hist[i].data())

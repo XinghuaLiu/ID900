@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ID900",
-    version="1.0.1",
+    version="1.0.2",
     author="Xinghua Liu",
     author_email="xinghua.liu94@gmail.com",
     description="python classes for ID900",
